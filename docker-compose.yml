@@ -31,7 +31,7 @@ services:
     depends_on:
       - mp-postgres
   mp-postgres:
-    image: postgres:11.2-alpine
+    image: postgres:11-alpine
     volumes:
       - ./docker/postgres:/var/lib/posgresql/data
     environment:
