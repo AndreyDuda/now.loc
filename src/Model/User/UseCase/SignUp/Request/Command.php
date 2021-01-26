@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Model\User\UseCase\SignUp\Request;
 
+use App\Model\User\Entity\User\Email;
+
 class Command
 {
     public string $email;
