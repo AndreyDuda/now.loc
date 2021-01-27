@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\User\Entity\User;
 
 use phpDocumentor\Reflection\Types\Integer;
+use PHPUnit\Util\Json;
 
 class User
 {
@@ -18,6 +19,7 @@ class User
     private \DateTimeImmutable $date;
     private string $status;
     private ?ResetToken $resetToken;
+    private array $roles;
 
     public function __construct(Email $email, string $passwordHash, string $token)
     {
@@ -27,36 +29,28 @@ class User
         $this->date = new \DateTimeImmutable();
         $this->status = self::STATUS_WAIT;
         $this->resetToken = null;
+        $this->roles[] = Role::USER;
     }
 
-    public function getEmail(): Email
+    public function addRole(string $role): void
     {
-        return $this->email;
+        if (!Role::checkAvailableRoles($role)) {
+            throw new \DomainException('Role is not available.');
+        }
+        if (in_array($role, $this->roles)) {
+            throw new \DomainException('Role is already same.');
+        }
+        $this->roles[] = $role;
     }
 
-    public function getPasswordHash(): string
+    public function deleteRole(string $role): void
     {
-        return $this->passwordHash;
-    }
+        if (!Role::checkAvailableRoles($role) || !in_array($role, $this->roles)) {
+            throw new \DomainException('Role is not available');
+        }
 
-    public function getDate(): \DateTimeImmutable
-    {
-        return $this->date;
-    }
-
-    public function getToken(): ?string
-    {
-        return $this->token;
-    }
-
-    public function getStatus(): string
-    {
-        return $this->status;
-    }
-
-    public function getResetToken(): ?ResetToken
-    {
-        return $this->resetToken;
+        $keyRole = array_search($role, $this->roles);
+        unset($this->roles[$keyRole]);
     }
 
     public function confirmSignUp(): void
@@ -99,5 +93,45 @@ class User
     public function isActive(): bool
     {
         return $this->getStatus() === self::STATUS_ACTIVE;
+    }
+
+    public function getEmail(): Email
+    {
+        return $this->email;
+    }
+
+    public function getPasswordHash(): string
+    {
+        return $this->passwordHash;
+    }
+
+    public function getDate(): \DateTimeImmutable
+    {
+        return $this->date;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function getStatus(): string
+    {
+        return $this->status;
+    }
+
+    public function getResetToken(): ?ResetToken
+    {
+        return $this->resetToken;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles);
     }
 }
