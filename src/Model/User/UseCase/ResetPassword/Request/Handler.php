@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Model\User\UseCase\ResetPassword;
+namespace App\Model\User\UseCase\ResetPassword\Request;
 
 use App\Model\Flusher;
 use App\Model\User\Entity\User\Email;
 use App\Model\User\Entity\User\User;
 use App\Model\User\Repository\UserRepository;
+use App\Model\User\Service\ResetTokenizer;
+use App\Model\User\Service\ResetTokenSender;
 use App\Model\User\Service\SignUpTokenizer;
 use App\Model\User\Service\SignUpTokenSender;
 
@@ -15,14 +17,14 @@ class Handler
 {
     private UserRepository $users;
     private Flusher $flusher;
-    private SignUpTokenizer $tokenizer;
-    private SignUpTokenSender $sender;
+    private ResetTokenizer $tokenizer;
+    private ResetTokenSender $sender;
 
     public function __construct(
         UserRepository $users,
         Flusher $flusher,
-        SignUpTokenizer $tokenizer,
-        SignUpTokenSender $sender
+        ResetTokenizer $tokenizer,
+        ResetTokenSender $sender
     )
     {
         $this->users = $users;
@@ -33,7 +35,10 @@ class Handler
 
     public function handle(Command $command): void
     {
-        /** @var User $user */
+        /**
+         * @todo query class
+         * @var User $user
+         */
         $user = $this->users->getByEmail(new Email($command->email));
 
         $user->requestPasswordReset(

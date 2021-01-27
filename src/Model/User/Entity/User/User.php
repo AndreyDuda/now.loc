@@ -26,6 +26,7 @@ class User
         $this->token = $token;
         $this->date = new \DateTimeImmutable();
         $this->status = self::STATUS_WAIT;
+        $this->resetToken = null;
     }
 
     public function getEmail(): Email
@@ -69,15 +70,25 @@ class User
 
     public function requestPasswordReset(ResetToken $token, \DateTimeImmutable $date): void
     {
+        if (!$this->isActive()) {
+            throw new \DomainException('User is not active.');
+        }
         if ($this->resetToken && !$this->resetToken->isExpiredTo($date)) {
             throw new \DomainException('Resetting is already requested.');
         }
         $this->resetToken = $token;
     }
 
-    public function resetPassword(\DateTimeImmutable $date, ResetToken $token): void
+    public function resetPassword(\DateTimeImmutable $date, string $hash): void
     {
-
+        if (!$this->resetToken) {
+            throw new \DomainException('Resetting is already requested.');
+        }
+        if ($this->resetToken->isExpiredTo($date)) {
+            throw new \DomainException('Reset token is expired.');
+        }
+        $this->passwordHash = $hash;
+        $this->resetToken = null;
     }
 
     public function isWait(): bool

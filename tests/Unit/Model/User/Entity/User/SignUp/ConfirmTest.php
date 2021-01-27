@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
 
-use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\User;
+use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class ConfirmTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = new User(
-            $email = new Email('test@signup.test'),
-            $hash = 'hash',
-            $token = 'token'
-        );
+        $user = (new UserBuilder())->buildUserWithParam();
 
         $user->confirmSignUp();
 
@@ -28,11 +23,7 @@ class ConfirmTest extends TestCase
 
     public function testAlready(): void
     {
-        $user = new User(
-            $email = new Email('test@signup.test'),
-            $hash = 'hash',
-            $token = 'token'
-        );
+        $user = (new UserBuilder())->buildUserWithParam();
 
         $user->confirmSignUp();
         $this->expectExceptionMessage('User is already confirmed');

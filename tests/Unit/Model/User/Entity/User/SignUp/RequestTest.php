@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Model\User\Entity\User\SignUp;
 
 use App\Model\User\Entity\User\Email;
-use App\Model\User\Entity\User\User;
+use App\Tests\Builder\User\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
 class RequestTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $user = new User(
+        $user = (new UserBuilder())->buildUserWithParam(
             $email = new Email('test@signup.test'),
             $hash = 'hash',
             $token = 'token'
