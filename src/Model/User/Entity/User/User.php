@@ -4,21 +4,54 @@ declare(strict_types=1);
 
 namespace App\Model\User\Entity\User;
 
-use phpDocumentor\Reflection\Types\Integer;
-use PHPUnit\Util\Json;
+use Doctrine\ORM\Mapping as ORM;
 
+/**
+ * @ORM\Entity
+ * @ORM\HasLifecycleCallbacks
+ * @ORM\Table(name="users", uniqueConstraints={
+ *      @ORM\UniqueConstraint(columns={"email"}),
+ *      @ORM\UniqueConstraint(columns={"reset_token_token"}),
+ * })
+ */
 class User
 {
     private const STATUS_WAIT = 'wait';
     private const STATUS_ACTIVE = 'active';
 
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue
+     */
     private int $id;
+    /**
+     * @ORM\Column(type="user_email")
+     */
     private Email $email;
+    /**
+     * @ORM\Column(type="string", length="32", name="password_hash")
+     */
     private string $passwordHash;
+    /**
+     * @ORM\Column(type="string", length="32", nullable=true)
+     */
     private ?string $token;
+    /**
+     * @ORM\Column(type="datetime_immutable")
+     */
     private \DateTimeImmutable $date;
+    /**
+     * @ORM\Column(type="string", length="20")
+     */
     private string $status;
+    /**
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token")
+     */
     private ?ResetToken $resetToken;
+    /**
+     * @ORM\Column(type="json")
+     */
     private array $roles;
 
     public function __construct(Email $email, string $passwordHash, string $token)
@@ -133,5 +166,15 @@ class User
     public function hasRole(string $role): bool
     {
         return in_array($role, $this->roles);
+    }
+
+    /**
+     * @ORM\PostLoad()
+     */
+    public function checkEmbeds(): void
+    {
+        if ($this->resetToken->isEmpty()) {
+            $this->resetToken = null;
+        }
     }
 }
