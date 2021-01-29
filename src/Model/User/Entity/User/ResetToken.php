@@ -13,7 +13,7 @@ use Webmozart\Assert\Assert;
 class ResetToken
 {
     /**
-     * @ORM\Column(type="string", length="32", nullable=true)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private string $token;
     /**

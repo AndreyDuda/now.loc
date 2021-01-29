@@ -7,7 +7,23 @@
 
         {% block javascripts %}{% endblock %}
     </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+
+    <header>
+
+    </header>
+
+    <main role="main" class="flex-shrink-0">
+        <div class="container">
+            {% block breadcrumbs %}{% endblock %}
+            {% include '_flash.html.twig' %}
+            {% block body %}{% endblock %}
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            <span class="text-muted">App</span>
+        </div>
+    </footer>
+
 </html>

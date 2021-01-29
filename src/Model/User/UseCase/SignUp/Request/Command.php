@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Model\User\UseCase\SignUp\Request;
 
-use App\Model\User\Entity\User\Email;
+use Symfony\Component\Validator\Constraint as Assert;
 
 class Command
 {
+    /**
+     * @Assert\NotBlank()
+     * @Assert\Email()
+     */
     public string $email;
-
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(min=4)
+     */
     public string $password;
-
-    public function __construct(string $email, string $password)
-    {
-        $this->email = $email;
-        $this->password = $password;
-    }
 }

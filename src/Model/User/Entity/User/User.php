@@ -30,11 +30,11 @@ class User
      */
     private Email $email;
     /**
-     * @ORM\Column(type="string", length="32", name="password_hash")
+     * @ORM\Column(type="string", length=32, name="password_hash")
      */
     private string $passwordHash;
     /**
-     * @ORM\Column(type="string", length="32", nullable=true)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private ?string $token;
     /**
@@ -42,11 +42,11 @@ class User
      */
     private \DateTimeImmutable $date;
     /**
-     * @ORM\Column(type="string", length="20")
+     * @ORM\Column(type="string", length=20)
      */
     private string $status;
     /**
-     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token")
+     * @ORM\Embedded(class="ResetToken", columnPrefix="reset_token_")
      */
     private ?ResetToken $resetToken;
     /**

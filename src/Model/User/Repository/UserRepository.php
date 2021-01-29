@@ -34,7 +34,7 @@ class UserRepository
     public function get(int $id): User
     {
         /** @var User $user */
-        if (!$user = $this->rep->find($id->getValue())) {
+        if (!$user = $this->rep->find($id)) {
             throw new NotFoundException('User is not found.');
         }
         return $user;
