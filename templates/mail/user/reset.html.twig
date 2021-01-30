@@ -1,0 +1,11 @@
+<h1>Welcome {{ email.toName }}!</h1>
+
+<p>
+    You signed up by Email {{ email.toName }} the following email:
+</p>
+<p><code>{{ email.to[0].address }}</code></p>
+
+<p>Click here to activate your account:</p>
+{% set url = url('auth.signup.confirm', {'token': token}) %}
+
+<p><a href="{{ url }}">{{ url }}</a></p>

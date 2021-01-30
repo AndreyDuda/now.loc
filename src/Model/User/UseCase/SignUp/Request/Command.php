@@ -14,7 +14,7 @@ class Command
      */
     public string $email;
     /**
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * @Assert\Length(min=4)
      */
     public string $password;

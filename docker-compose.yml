@@ -42,3 +42,7 @@ services:
       MYSQL_USER: mp
       MYSQL_PASSWORD: mp
       MYSQL_DATABASE: mp
+  mailer:
+    image: mailhog/mailhog
+    ports:
+      - "8082:8025"
