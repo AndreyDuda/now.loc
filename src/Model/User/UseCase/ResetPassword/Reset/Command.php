@@ -9,11 +9,11 @@ use Symfony\Component\Validator\Constraint as Assert;
 class Command
 {
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      */
     public string $token;
     /**
-     * @Assert\NotBlank()
+     * @Assert\NotBlank
      * @Assert\Length(min=4)
      */
     public string $password;

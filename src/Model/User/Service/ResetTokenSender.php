@@ -15,9 +15,9 @@ class ResetTokenSender
 {
     private MailerInterface $mailer;
     private Environment $twig;
-    private array $from;
+    private string $from;
 
-    public function __construct(MailerInterface $mailer, Environment $twig, array $from)
+    public function __construct(MailerInterface $mailer, Environment $twig, string $from)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

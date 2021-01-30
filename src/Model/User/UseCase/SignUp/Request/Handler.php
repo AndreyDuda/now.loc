@@ -42,8 +42,8 @@ class Handler
     public function handle(Command $command): void
     {
         $email = new Email($command->email);
-        /**@todo rewrite on query class */
-        if ($this->em->getRepository(User::class)->findOneBy(['email', $email->getValue()])) {
+
+        if ($this->users->hasByEmail($email)) {
             throw new \DomainException('User already exists.');
         }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Auth;
 
 use App\Http\Form\ResetPasswordForm;
+use App\Model\User\Query\UserExistsByResetTokenQuery;
 use App\Model\User\UseCase\ResetPassword;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -50,8 +51,18 @@ class ResetController extends AbstractController
     /**
      * @Route("/reset/{token}", name="auth.reset.reset")
      */
-    public function reset(string $token, Request $request, ResetPassword\Reset\Handler $handler): Response
+    public function reset(
+        string $token,
+        Request $request,
+        ResetPassword\Reset\Handler $handler,
+        UserExistsByResetTokenQuery $userExistsQuery
+    ): Response
     {
+        if (!$userExistsQuery->fetch($token)) {
+            $this->addFlash('error', 'Incorrect or already confirmed token.');
+            return $this->redirectToRoute('home');
+        }
+
         $command = new ResetPassword\Reset\Command($token);
 
         $form = $this->createForm(ResetPasswordForm\Reset\Form::class, $command);
