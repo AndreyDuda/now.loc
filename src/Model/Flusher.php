@@ -15,7 +15,7 @@ class Flusher
         $this->em = $em;
     }
 
-    public function flush()
+    public function flush(): void
     {
         $this->em->flush();
     }
