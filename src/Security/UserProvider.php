@@ -38,7 +38,7 @@ class UserProvider implements UserProviderInterface
 
     public function supportsClass(string $class): bool
     {
-        return $class instanceof UserIdentity;
+        return true;
     }
 
     public static function identityByUser(UserAuth $user): UserIdentity
@@ -47,7 +47,7 @@ class UserProvider implements UserProviderInterface
             $user->id,
             $user->email,
             $user->passwordHash,
-            $user->role,
+            $user->roles,
             $user->status
         );
     }

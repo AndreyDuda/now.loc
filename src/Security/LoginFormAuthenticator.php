@@ -21,7 +21,7 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = '/';
+    public const LOGIN_ROUTE = 'app_login';
 
     private $urlGenerator;
     private $csrfTokenManager;

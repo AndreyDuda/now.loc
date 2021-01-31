@@ -23,20 +23,20 @@ class UserForAuthQuery
                 'id',
                 'email',
                 'password_hash',
-                'role',
+                'roles',
                 'status'
             )
             ->from('users')
             ->where('email = :email')
             ->setParameter(':email', $email)
             ->execute()
-            ->fetchOne();
+            ->fetch();
 
         $stmt = ($stmt) ? new UserAuth(
-            $stmt['id'],
+            (int) $stmt['id'],
             $stmt['email'],
             $stmt['password_hash'],
-            $stmt['role'],
+            $stmt['roles'],
             $stmt['status']
         ) : null;
 
